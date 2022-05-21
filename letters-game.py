@@ -19,17 +19,6 @@ four_letters = ["א", "ב", "ג", "ד"]
 five_letters = ["א", "ב", "ג", "ד", "ה"]
 
 
-def euclid_algo(num1, num2):
-    large = max(num1, num2)
-    small = min(num1, num2)
-    c = large % small
-    while c > 0:
-        large = small
-        small = c
-        c = large % small
-    return small
-
-
 def roll_a_dice(num=7, on=False):
     if num != 7:
         cubes = three_cubes
@@ -193,4 +182,4 @@ def single_turn():
     print_words(words)
 
 
-analyze_game(100)
+#single_turn()
