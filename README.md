@@ -32,7 +32,7 @@ single_turn()
 ```
 This function simulate a single dice roll, and prints a list of all the Hebrew words we can generate from those letters:
 
-![use](https://github.com/kfirkrak/letters-game/blob/main/images/exemple1.png)
+![use](https://github.com/kfirkrak/letters-game/blob/main/images/example1.png)
 
 After seeing this list, the first player can choose one of the 5 letter words and place it on the board:
 
