@@ -1,5 +1,6 @@
 import random
-from Dictionary import *
+from heb_dict import *
+import matplotlib.pyplot as plt
 
 seven_cubes = [["א", "ח", "ל", "ע", "פ", "ת"],
                ["ד", "ז", "י", "ס", "צ", "ק"],
@@ -93,15 +94,11 @@ def fix_word(word):
 
 
 def print_words(words):
-    dic = create_dic()
     i = 2
     j = 0
     for word in words:
-        if word not in dic:
-            continue
         if len(word) < 2:
             continue
-        word = fix_word(word)
         if len(word) == i:
             j += 1
             print(word, end=" ")
@@ -114,7 +111,86 @@ def print_words(words):
             print(word, end=" ")
 
 
-roll = roll_a_dice(7, True)
-subs = subsets(roll)
-words = every_combination(subs)
-print_words(words)
+def valid_words(words, dic=None):
+    if not dic:
+        dic = create_dic()
+    longest = 0
+    n_words = []
+    for word in words:
+        if word not in dic:
+            continue
+        size = len(word)
+        if size < 2:
+            continue
+        word = fix_word(word)
+        n_words.append(word)
+        if size > longest:
+            longest = size
+    return n_words, longest
+
+
+def analyze_game(times):
+    ALEPH = 1488
+    longest_word = [0] * 8
+    arr_len = 27
+    letters = [0] * arr_len
+    heb_dic = create_dic()
+    for i in range(times):
+        roll = roll_a_dice(7, False)
+        for letter in roll:
+            letters[ord(letter) - ALEPH] += 1
+        subs = subsets(roll)
+        words = every_combination(subs)
+        words, size = valid_words(words, heb_dic)
+        longest_word[size] += 1
+    n_letters = [[], []]
+    for i in range(len(letters)):
+        n_letters[0].append(chr(i + ALEPH))
+        n_letters[1].append(letters[i])
+    plot_results_longest_pie(longest_word[1:], times)
+    plot_results_letters_bar(n_letters, times)
+
+
+def plot_results_longest_pie(data, nums):
+    length = ['', '', '', '4', '5', '6', '7']
+    slices = data
+    colors = ['b', 'm', 'c', 'r', 'y', 'g', 'b']
+    plt.pie(slices, labels=length, colors=colors,
+            startangle=90, shadow=True, explode=(0, 0, 0, 0, 0, 0, 0),
+            radius=1.2, autopct='%1.1f%%')
+    my_str = "Distribution of longest word for " + str(nums) + " rolls"
+    plt.title(my_str, pad=20)
+    plt.legend()
+    plt.show()
+
+
+def plot_results_longest_bar(data, nums):
+    length = [i for i in range(1, 8)]
+    fig = plt.figure(figsize=(10, 8))
+    plt.bar(length, data, color='maroon', width=0.4)
+    plt.xlabel("Length")
+    plt.ylabel("Times")
+    my_str = "Distribution of longest word for " + str(nums) + " rolls"
+    plt.title(my_str)
+    plt.show()
+
+
+def plot_results_letters_bar(data, nums):
+    fig = plt.figure(figsize=(10, 8))
+    plt.bar(data[0], data[1], color='maroon', width=0.4)
+    plt.xlabel("Letter")
+    plt.ylabel("Times")
+    my_str = "Distribution of Hebrew letters for " + str(nums) + " rolls"
+    plt.title(my_str)
+    plt.show()
+
+
+def single_turn():
+    roll = roll_a_dice(7, True)
+    subs = subsets(roll)
+    words = every_combination(subs)
+    words, size = valid_words(words)
+    print_words(words)
+
+
+analyze_game(100)
