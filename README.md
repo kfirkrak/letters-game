@@ -60,4 +60,6 @@ moreover is it very unlikely that we won't be able to find a word shorter than 5
 
 ![use](https://github.com/kfirkrak/letters-game/blob/main/images/letters1000rolls.png)
 
-From this bar graph we can see that the cubes are pretty fair, with a slight deviation for the two most common vowels
+In this bar graph we see the distribution of letters in the lists of words we can create with the dice rolls.
+
+From this we can learn that the **best letters for building word are the vowels**, which is indeed no surprise
