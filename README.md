@@ -18,11 +18,13 @@ The game is over once all the letters has been chosen, each as a part of some wo
 
 ### Programming tools
 To solve this problem I've used the following key ideas:
-- Random
+- random
   - In the function ```roll_a_dice(num=7, on=False)``` which simulate a single dice roll for us
 - combinatorics
   - ```subset(roll)``` which generate each possible subset of a givin dice roll
   - ```every_combination(lists)``` sorting out the **unique** subsets
+- dictionary
+  - I've created a dictionary for Hebrew words from a file I found online. I'm well aware this dictionary isn't comprehensive nor completely accurate but it's well fitted for the task at hand
 ## Example of usage
 In order to run a single turn we'll call the function:
 ```
@@ -43,7 +45,7 @@ Thus the second player can choose on of the 3 letter words to place the remainin
 And the second player would win this round
 
 ## Game analysis
-We can use this code to generate new insights on this game
+We can use this code to generate new insights on the game
 
 The main tool I wrote for that is the function ```analyze_game(times)```
 
