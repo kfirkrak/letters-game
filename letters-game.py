@@ -114,13 +114,6 @@ def print_words(words):
             print(word, end=" ")
 
 
-def load_words():
-    with open('words_hebrew.txt') as word_file:
-        valid_words = set(word_file.read().split())
-
-    return valid_words
-
-
 roll = roll_a_dice(7, True)
 subs = subsets(roll)
 words = every_combination(subs)
