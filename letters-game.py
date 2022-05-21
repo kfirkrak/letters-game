@@ -100,22 +100,27 @@ def print_words(words):
             print(word, end=" ")
 
 
-def valid_words(words, dic=None):
+def valid_words(words, dic=None, letters=None):
     if not dic:
         dic = create_dic()
     longest = 0
     n_words = []
+    ALEPH = 1488
+    if not letters:
+        letters = [0] * 27
     for word in words:
         if word not in dic:
             continue
         size = len(word)
         if size < 2:
             continue
-        word = fix_word(word)
-        n_words.append(word)
         if size > longest:
             longest = size
-    return n_words, longest
+        for letter in word:
+            letters[ord(letter) - ALEPH] += 1
+        word = fix_word(word)
+        n_words.append(word)
+    return n_words, longest, letters
 
 
 def analyze_game(times):
@@ -124,20 +129,21 @@ def analyze_game(times):
     arr_len = 27
     letters = [0] * arr_len
     heb_dic = create_dic()
+    letters_dis = [0] * arr_len
     for i in range(times):
         roll = roll_a_dice(7, False)
         for letter in roll:
             letters[ord(letter) - ALEPH] += 1
         subs = subsets(roll)
         words = every_combination(subs)
-        words, size = valid_words(words, heb_dic)
+        words, size, letters_dis = valid_words(words, heb_dic, letters_dis)
         longest_word[size] += 1
     n_letters = [[], []]
     for i in range(len(letters)):
         n_letters[0].append(chr(i + ALEPH))
         n_letters[1].append(letters[i])
     plot_results_longest_pie(longest_word[1:], times)
-    plot_results_letters_bar(n_letters, times)
+    plot_results_letters_dis_bar(letters_dis, times)
 
 
 def plot_results_longest_pie(data, nums):
@@ -164,9 +170,10 @@ def plot_results_longest_bar(data, nums):
     plt.show()
 
 
-def plot_results_letters_bar(data, nums):
+def plot_results_letters_dis_bar(data, nums):
     fig = plt.figure(figsize=(10, 8))
-    plt.bar(data[0], data[1], color='maroon', width=0.4)
+    heb = [chr(i) for i in range(1488, 1488 + 27)]
+    plt.bar(heb, data, color='maroon', width=0.4)
     plt.xlabel("Letter")
     plt.ylabel("Times")
     my_str = "Distribution of Hebrew letters for " + str(nums) + " rolls"
@@ -178,8 +185,10 @@ def single_turn():
     roll = roll_a_dice(7, True)
     subs = subsets(roll)
     words = every_combination(subs)
-    words, size = valid_words(words)
+    words, size, letters = valid_words(words)
     print_words(words)
+    #plot_results_letters_dis_bar(letters, 1)
 
 
-#single_turn()
+if __name__ == '__main__':
+    single_turn()
